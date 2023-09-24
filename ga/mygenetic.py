@@ -42,9 +42,14 @@ class MyGeneticAlgorithm(Algorithm):
         ratings_movies = RatingsRepository.find_by_movieid_list(self.db, individual)
 
         if len(ratings_movies) > 0:
-            mean_ = 2 * np.mean([obj_.rating for obj_ in ratings_movies])
-        else:
-            mean_ = 0.0
+            ratings = ([obj_.rating for obj_ in ratings_movies])
 
-        return (mean_, )
+            penalty = len([rating for rating in ratings if rating < 3.0])
+
+            mean_rating = np.mean(ratings) - penalty
+        else:
+            mean_rating = 0.0
+
+        return (mean_rating, )
+
 
